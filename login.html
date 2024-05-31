@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="login.css">
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD11lbLwXWdRbmE4Lh1-bn8k8xIUezU798",
+            authDomain: "siva-firebase-67e54.firebaseapp.com",
+            projectId: "siva-firebase-67e54",
+            storageBucket: "siva-firebase-67e54.appspot.com",
+            messagingSenderId: "363792486790",
+            appId: "1:363792486790:web:b931e37d2d569e0877dc07",
+            measurementId: "G-MEEHL3VHYX"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
+        
+        // Function to handle form submission
+        window.addEventListener('load', () => {
+            document.querySelector("form").addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const firstName = document.getElementById("firstName").value;
+                const lastName = document.getElementById("lastName").value;
+                const gender = document.querySelector('input[name="gender"]:checked').id;
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                const number = document.getElementById("number").value;
+
+                set(ref(database, 'users/' + number), {
+                    firstName: firstName,
+                    lastName: lastName,
+                    gender: gender,
+                    email: email,
+                    password: password,
+                    number: number
+                }).then(() => {
+                    alert("Registration successful!");
+                }).catch((error) => {
+                    console.error("Error: ", error);
+                });
+            });
+        });
+    </script>
+</head>
+<body> 
+
+<div class="form-container">
+    <h2>Registration Form</h2>
+    <form>
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <div class="radio-group">
+                <label class="radio-inline"><input type="radio" name="gender" id="male" required> Male <span></span></label>
+                <label class="radio-inline"><input type="radio" name="gender" id="female"> Female <span></span></label>
+                <label class="radio-inline"><input type="radio" name="gender" id="others"> Others <span></span></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="number">Phone Number:</label>
+            <input type="number" id="number" name="number" required>
+        </div>
+        <div class="form-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
